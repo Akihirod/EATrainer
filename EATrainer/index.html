@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="ALAT.jpg"> 
+    <title>Préparation EOPAN / ALAT</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <header>
+        <h1>Préparation EOPAN / ALAT</h1>
+    </header>
+
+    <main>
+        
+        <section id="mainMenu" class="screen-content">
+            <h2>Choisissez un module de préparation</h2>
+            <div class="menu-options">
+                <button id="startSimulatorButton" class="btn btn-primary">
+                    🚀 Simulateur Multi-Tâche (Concentration & Mémorisation)
+                </button>
+                <button id="startFlashcardButton" class="btn btn-primary">
+                    📚 Culture Aéronautique & Militaire (Flash Cards)
+                </button>
+                <button id="showHistoryButton" class="btn btn-secondary">
+                    📊 Historique des Scores & Évolution
+                </button>
+            </div>
+        </section>
+
+        <section id="flashCardScreen" style="display: none;" class="screen-content">
+            <h2 id="flashCardTitle">Culture Aéronautique & Militaire</h2>
+            
+            <div id="seriesSelectorContainer">
+                <label for="seriesSelector">Choisir la série :</label>
+                <select id="seriesSelector"></select>
+            </div>
+
+            <div id="cardContent" class="card-question">
+                <p id="flashCardText">Question ici...</p>
+            </div>
+            
+            <div class="card-controls">
+                <button id="revealAnswerButton" class="btn">Révéler la Réponse</button>
+                <button id="nextCardButton" class="btn" style="display: none;">Carte Suivante</button>
+            </div>
+
+            <p class="card-status">
+                Carte <span id="currentCardIndex">1</span> sur <span id="totalCardsCount">20</span>
+            </p>
+
+            <button id="backToMenuFlashcard" class="btn btn-secondary">← Retour au Menu Principal</button>
+        </section>
+
+        <div id="settingsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                
+                <div id="settingsForm">
+                    <h2>Configuration du Simulateur</h2>
+                    <form id="simulatorSettings">
+                        
+                        <h3>Durée et Score</h3>
+                        <div class="form-group">
+                            <label for="settingDuration">Durée de la session (minutes)</label>
+                            <input type="number" id="settingDuration" value="5" min="1" max="15">
+                        </div>
+
+                        <h3>Tâche 1 : Pilotage & Instructions</h3>
+                        <div class="form-group">
+                            <label for="settingInstructionDelay">Délai entre instructions (secondes)</label>
+                            <input type="number" id="settingInstructionDelay" value="30" min="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingInstructionCount">Nombre d'instructions de vol</label>
+                            <input type="number" id="settingInstructionCount" value="10" min="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="settingTargetFrequency">Fréquence des cibles (secondes)</label>
+                            <input type="number" id="settingTargetFrequency" value="3" min="1">
+                            <p class="small-text">Une cible aléatoire apparaît toutes les N secondes. Visez-la avec le réticule.</p>
+                        </div>
+
+                        <h3>Tâche 2 : Calcul Mental</h3>
+                        <div class="form-group">
+                            <label for="settingMathDelay">Délai entre calculs (secondes)</label>
+                            <input type="number" id="settingMathDelay" value="20" min="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingMathCount">Nombre de calculs</label>
+                            <input type="number" id="settingMathCount" value="15" min="1">
+                        </div>
+                        <p class="small-text">Réponse instantanée en tapant sur le champ de saisie.</p>
+
+                        <h3>Tâche 3 : Mémorisation de Nombres</h3>
+                        <div class="form-group">
+                            <label for="settingSequenceDelay">Délai entre séquences (secondes)</label>
+                            <input type="number" id="settingSequenceDelay" value="45" min="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingSequenceCount">Nombre de séquences à mémoriser</label>
+                            <input type="number" id="settingSequenceCount" value="5" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingSequenceLength">Longueur des séquences (chiffres)</label>
+                            <input type="number" id="settingSequenceLength" value="5" min="3" max="8">
+                        </div>
+                        
+                        <h3>Tâche 4 : Mémorisation de Formes</h3>
+                        <div class="form-group">
+                            <label for="settingShapeDelay">Délai entre formes (secondes)</label>
+                            <input type="number" id="settingShapeDelay" value="45" min="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="settingShapeCount">Nombre de formes à mémoriser</label>
+                            <input type="number" id="settingShapeCount" value="5" min="1">
+                        </div>
+                        
+                        <button id="startGameButton" type="button" class="btn btn-primary">Démarrer la Simulation</button>
+                    </form>
+                </div>
+
+                <div id="restitutionNumbersScreen" style="display: none;">
+                    <h2>Restitution : Séquences de Nombres</h2>
+                    <p>Veuillez entrer les séquences de nombres (une séquence par ligne) que vous avez mémorisées :</p>
+                    <textarea id="restitutionInput" rows="10"></textarea>
+                    <button id="submitRestitutionButton" class="btn btn-primary">Continuer (Restitution Formes)</button>
+                </div>
+
+                <div id="restitutionShapesScreen" style="display: none;">
+                    <h2>Restitution : Formes et Couleurs</h2>
+                    <p>Veuillez entrer les formes et les couleurs (ex: "carré rouge", une par ligne) que vous avez mémorisées :</p>
+                    <textarea id="restitutionShapesInput" rows="10"></textarea>
+                    <button id="submitShapesButton" class="btn btn-primary">Afficher le Score Final</button>
+                </div>
+
+
+                <div id="scoreDisplay" style="display: none;">
+                    <h2>Résultats de la Session</h2>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <h3>Précision du Pilotage</h3>
+                            <p>Temps passé dans les paramètres cibles : <span id="finalScore">0</span></p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Calcul Mental</h3>
+                            <p>Calculs corrects : <span id="mathScore">0/0</span></p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Mémorisation de Nombres</h3>
+                            <p>Séquences correctement restituées : <span id="memoryNumbersScore">0/0</span></p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Mémorisation de Formes</h3>
+                            <p>Formes/Couleurs correctement restituées : <span id="memoryShapesScore">0/0</span></p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Précision du Ciblage</h3>
+                            <p>Cibles touchées : <span id="targetScore">0/0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="save-score-section">
+                        <h3>Enregistrer ce Score ?</h3>
+                        <p>Souhaitez-vous sauvegarder vos résultats pour suivre votre progression ?</p>
+                        <button id="saveScoreButton" class="btn btn-primary">Enregistrer le Score</button>
+                        <button id="skipSaveButton" class="btn btn-secondary">Ne pas Enregistrer</button>
+                    </div>
+
+                    <button id="restartButton" class="btn btn-primary" style="display: none;">Nouvelle Simulation</button>
+                    <button id="exitSimScoreButton" class="btn btn-secondary" style="display: none;">← Menu Principal</button> 
+                </div>
+
+            </div>
+        </div>
+
+        <section id="simulatorInterface" style="display: none;" class="screen-content">
+            
+            <div class="flight-controls">
+                <div class="gauge-display">
+                    <p>ALTITUDE: <span id="currentAltitude">1500</span> m</p>
+                    <p>VITESSE: <span id="currentSpeed">250</span> kts</p>
+                    <p>CAP: <span id="currentHeading">180</span> °</p>
+                </div>
+                
+                <div class="controls-guide">
+                    <h4>Contrôles (Simulés)</h4>
+                    <p>Pilotage : **Flèches dir.** | Vitesse : **Z/S** | **Cap : Q/D** | Altitude : **R/F**</p>
+                </div>
+                
+                <div class="timer-display">
+                    <h4>Temps restant</h4>
+                    <span id="timer">300</span>s
+                </div>
+            </div>
+
+            <div class="main-simulation-area">
+                
+                <div class="task-column left-column">
+                    
+                    <div class="task-box instructions">
+                        <h3>Objectif de Vol</h3>
+                        <p id="flightInstruction">MAINTENIR 1500m, 250 kts, cap 180</p>
+                    </div>
+                    
+                    <div class="task-box sequence-task">
+                        <h3>Séquence (Mémoriser)</h3>
+                        <p id="numberSequence">----</p>
+                        <p>Séquences vues : <span id="sequenceCounter">0 / 5</span></p>
+                    </div>
+
+                </div>
+
+                <div class="flight-center">
+                    <div class="task-box flight-sim">
+                        <canvas id="flightSimCanvas" width="600" height="400"></canvas>
+                    </div>
+                </div>
+                
+                <div class="task-column right-column">
+                    
+                    <div class="task-box math-task">
+                        <h3>Calcul Mental</h3>
+                        <p id="mathProblem">-- + -- = ?</p>
+                        <input type="text" id="mathInput" placeholder="Réponse (Entrée)" /> 
+                    </div>
+                    
+                    <div class="task-box shape-task">
+                        <h3>Forme/Couleur (Mémoriser)</h3>
+                        <canvas id="shapeCanvas" width="200" height="200"></canvas>
+                        <p>Formes vues : <span id="shapeCounter">0 / 5</span></p>
+                    </div>
+
+                </div>
+                
+            </div>
+            
+            <button id="exitSimInterfaceButton" class="btn btn-secondary exit-sim-btn">Quitter la Simulation (Scores non sauvegardés)</button> 
+        </section>
+        
+        <section id="historyScreen" style="display: none;" class="screen-content">
+            <h2>Historique & Progression</h2>
+            
+            <div id="sortControls" class="history-controls">
+                <label for="sortCriteria">Trier par :</label>
+                <select id="sortCriteria">
+                    <option value="dateDesc" selected>Date (Plus récent)</option>
+                    <option value="dateAsc">Date (Plus ancien)</option>
+                    <option value="pilotageDesc">Pilotage (Meilleur score)</option>
+                    <option value="pilotageAsc">Pilotage (Moins bon score)</option>
+                </select>
+                <button id="clearHistoryButton" class="btn btn-danger">Effacer l'Historique</button>
+            </div>
+            
+            <div class="history-table-container">
+                <table id="scoreTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Pilotage (s)</th>
+                            <th>Ciblage (Hits)</th>
+                            <th>Calculs (C/T)</th>
+                            <th>Nombres (C/T)</th>
+                            <th>Formes (C/T)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreList">
+                        </tbody>
+                </table>
+            </div>
+            
+            <button id="backToMenuHistory" class="btn btn-secondary">← Retour au Menu Principal</button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script> 
+</body>
+</html>
